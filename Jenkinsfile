@@ -2,7 +2,7 @@ pipeline {
 	agent {
 		docker {
 			image 'node:lts-buster-slim'
-			args ' -p 3000:3000'
+			args ' -p 9000:9000'
 		}
 	}
 	environment {
@@ -16,8 +16,12 @@ pipeline {
 		}
 		stage('Test') {
 			steps {
-				sh 'ls'
-				sh 'pwd'
+				script {
+					def scannerHome = tool 'scanner';
+					withSonarQubeEnv('scanner'){
+						sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=OWASP -Dsonar.sources=."
+					}
+				}
 				sh './jenkins/scripts/test.sh'
 			}
 		}
