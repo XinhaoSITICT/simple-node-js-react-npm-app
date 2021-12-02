@@ -15,13 +15,19 @@ pipeline {
 			}
 		}
 		stage('Test') {
-			steps {
-				script {
-					def scannerHome = tool 'scanner';
-					withSonarQubeEnv('scanner'){
-						sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=OWASP -Dsonar.sources=."
+				steps {
+					script {
+						def scannerHome = tool 'scanner';
+						withSonarQubeEnv('scanner'){
+							sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=OWASP -Dsonar.sources=."
+						}
 					}
 				}
+			post{
+				always{
+					recordIssues enabledForFailure: true, tool: SonarQube()
+				}
+			}
 				sh './jenkins/scripts/test.sh'
 			}
 		}
