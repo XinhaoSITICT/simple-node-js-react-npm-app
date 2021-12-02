@@ -15,24 +15,9 @@ pipeline {
 			}
 		}
 
-		stage('Test scan using SONARQUBE') {
+		stage('Test') {
 				steps {
-					script {
-						def scannerHome = tool 'SonarQube';
-						withSonarQubeEnv('SonarQube'){
-							sh "${scannerHome}/bin/sonar-scanner \
-  							-Dsonar.projectKey=OWASP \
-  							-Dsonar.sources=. \
-  							-Dsonar.host.url=http://52.15.166.17:9000 \
-  							-Dsonar.login=0f1c83c7ff6cb2f1c20789cf5be52e2c68529c86"
-						}
-					}
-				
-			post{
-				always{
-					recordIssues enabledForFailure: true, tool: SonarQube()
-				}
-			}
+			
 				sh './jenkins/scripts/test.sh'
 			}
 		}
