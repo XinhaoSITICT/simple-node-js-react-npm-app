@@ -14,6 +14,7 @@ pipeline {
 				sh 'npm install'
 			}
 		}
+
 		stage('Test') {
 				steps {
 					script {
@@ -22,7 +23,7 @@ pipeline {
 							sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=OWASP -Dsonar.sources=."
 						}
 					}
-				}
+				
 			post{
 				always{
 					recordIssues enabledForFailure: true, tool: SonarQube()
