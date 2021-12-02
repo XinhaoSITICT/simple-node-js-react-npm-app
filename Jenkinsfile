@@ -18,14 +18,14 @@ pipeline {
 			steps {
 				sh 'ls'
 				sh 'pwd'
-				sh '.jenkins/scripts/test.sh'
+				sh './jenkins/scripts/test.sh'
 			}
 		}
 		stage('Deliver') {
 			steps {
-				sh '.jenkins/scripts/deliver.sh'
+				sh './jenkins/scripts/deliver.sh'
 				input message: 'Finished?'
-				sh '.jenkins/scripts/kill.sh'
+				sh './jenkins/scripts/kill.sh'
 			}
 		}
 	}
